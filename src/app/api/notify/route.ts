@@ -43,12 +43,14 @@ export async function POST(request: NextRequest) {
   let sentCount = 0;
 
   for (const deal of deals) {
-    // 条件マッチング：業種・エリア・価格帯
+    // 条件マッチング：業種・エリア・価格帯・売上規模
+    // 条件未設定（空配列）の項目は全マッチ扱い
     const matchedBuyers = (buyers || []).filter((buyer) => {
-      const industryMatch = buyer.industries.includes(deal.industry);
-      const areaMatch = buyer.areas.includes(deal.area);
-      const priceMatch = buyer.price_ranges.includes(deal.price_range);
-      return industryMatch && areaMatch && priceMatch;
+      const industryMatch = !buyer.industries?.length || buyer.industries.includes(deal.industry);
+      const areaMatch = !buyer.areas?.length || buyer.areas.includes(deal.area);
+      const priceMatch = !buyer.price_ranges?.length || buyer.price_ranges.includes(deal.price_range);
+      const revenueMatch = !buyer.revenue_scales?.length || !deal.revenue_scale || buyer.revenue_scales.includes(deal.revenue_scale);
+      return industryMatch && areaMatch && priceMatch && revenueMatch;
     });
 
     for (const buyer of matchedBuyers) {

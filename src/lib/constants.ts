@@ -36,6 +36,15 @@ export const PRICE_RANGES = [
   "1億円〜",
 ] as const;
 
+export const REVENUE_SCALES = [
+  "〜1,000万円",
+  "1,000万〜3,000万円",
+  "3,000万〜5,000万円",
+  "5,000万〜1億円",
+  "1億〜3億円",
+  "3億円〜",
+] as const;
+
 export const EMPLOYEE_SCALES = [
   "なし",
   "1〜5名",

@@ -7,6 +7,7 @@ create table if not exists deals (
   industry text not null,        -- 業種
   area text not null,             -- エリア
   price_range text not null,      -- 譲渡希望価格帯
+  revenue_scale text,             -- 売上規模
   employee_scale text,            -- 従業員規模
   summary text,                   -- 概要（100字程度）
   source_url text,                -- 元サイトURL
@@ -21,11 +22,12 @@ create table if not exists deals (
 -- 買い手テーブル
 create table if not exists buyers (
   id uuid default gen_random_uuid() primary key,
-  name text not null,
   email text not null unique,
-  industries text[] not null,     -- 希望業種（複数選択可）
-  areas text[] not null,          -- 希望エリア（複数選択可）
-  price_ranges text[] not null,   -- 希望価格帯（複数選択可）
+  name text,
+  industries text[] default '{}',  -- 希望業種（複数選択可）
+  areas text[] default '{}',       -- 希望エリア（複数選択可）
+  price_ranges text[] default '{}',-- 希望価格帯（複数選択可）
+  revenue_scales text[] default '{}',-- 希望売上規模（複数選択可）
   is_active boolean default true,
   created_at timestamptz default now(),
   updated_at timestamptz default now()

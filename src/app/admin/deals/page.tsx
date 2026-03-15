@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { INDUSTRIES, AREAS, PRICE_RANGES, EMPLOYEE_SCALES } from "@/lib/constants";
+import { INDUSTRIES, AREAS, PRICE_RANGES, REVENUE_SCALES, EMPLOYEE_SCALES } from "@/lib/constants";
 import type { Deal } from "@/types/database";
 
 const emptyForm: Record<string, string> = {
@@ -9,6 +9,7 @@ const emptyForm: Record<string, string> = {
   industry: INDUSTRIES[0],
   area: AREAS[0],
   price_range: PRICE_RANGES[0],
+  revenue_scale: REVENUE_SCALES[0],
   employee_scale: EMPLOYEE_SCALES[0],
   summary: "",
   source_url: "",
@@ -68,6 +69,7 @@ export default function AdminDealsPage() {
       industry: deal.industry,
       area: deal.area,
       price_range: deal.price_range,
+      revenue_scale: deal.revenue_scale || "",
       employee_scale: deal.employee_scale || "",
       summary: deal.summary || "",
       source_url: deal.source_url || "",

@@ -4,6 +4,7 @@ export type Deal = {
   industry: string;
   area: string;
   price_range: string;
+  revenue_scale: string | null;
   employee_scale: string | null;
   summary: string | null;
   source_url: string | null;
@@ -22,6 +23,7 @@ export type Buyer = {
   industries: string[];
   areas: string[];
   price_ranges: string[];
+  revenue_scales: string[];
   is_active: boolean;
   created_at: string;
   updated_at: string;
