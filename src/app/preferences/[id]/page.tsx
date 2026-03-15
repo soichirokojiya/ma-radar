@@ -1,9 +1,9 @@
 "use client";
 
 import { useState, useEffect, use } from "react";
-import { INDUSTRIES, AREAS, PRICE_RANGES, REVENUE_SCALES } from "@/lib/constants";
+import { INDUSTRIES, AREAS, PRICE_RANGES } from "@/lib/constants";
 
-type FormKey = "industries" | "areas" | "price_ranges" | "revenue_scales";
+type FormKey = "industries" | "areas" | "price_ranges";
 
 export default function PreferencesPage({
   params,
@@ -15,7 +15,6 @@ export default function PreferencesPage({
     industries: [] as string[],
     areas: [] as string[],
     price_ranges: [] as string[],
-    revenue_scales: [] as string[],
   });
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -31,7 +30,6 @@ export default function PreferencesPage({
             industries: data.industries || [],
             areas: data.areas || [],
             price_ranges: data.price_ranges || [],
-            revenue_scales: data.revenue_scales || [],
           });
         }
       })
@@ -45,6 +43,13 @@ export default function PreferencesPage({
       [key]: prev[key].includes(value)
         ? prev[key].filter((v) => v !== value)
         : [...prev[key], value],
+    }));
+  };
+
+  const selectAll = (key: FormKey, options: readonly string[]) => {
+    setForm((prev) => ({
+      ...prev,
+      [key]: prev[key].length === options.length ? [] : [...options],
     }));
   };
 
@@ -85,11 +90,10 @@ export default function PreferencesPage({
     );
   }
 
-  const sections: { label: string; key: FormKey; options: readonly string[] }[] = [
+  const sections: { label: string; key: FormKey; options: readonly string[]; showSelectAll?: boolean }[] = [
     { label: "希望業種", key: "industries", options: INDUSTRIES },
-    { label: "希望エリア", key: "areas", options: AREAS },
+    { label: "希望エリア", key: "areas", options: AREAS, showSelectAll: true },
     { label: "希望価格帯（譲渡価格）", key: "price_ranges", options: PRICE_RANGES },
-    { label: "希望売上規模", key: "revenue_scales", options: REVENUE_SCALES },
   ];
 
   return (
@@ -118,11 +122,22 @@ export default function PreferencesPage({
           )}
 
           <form onSubmit={handleSubmit} className="space-y-6">
-            {sections.map(({ label, key, options }) => (
+            {sections.map(({ label, key, options, showSelectAll }) => (
               <div key={key}>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  {label}（複数選択可）
-                </label>
+                <div className="flex items-center justify-between mb-2">
+                  <label className="block text-sm font-medium text-gray-700">
+                    {label}（複数選択可）
+                  </label>
+                  {showSelectAll && (
+                    <button
+                      type="button"
+                      onClick={() => selectAll(key, options)}
+                      className="text-xs text-blue-600 hover:text-blue-800 font-medium"
+                    >
+                      {form[key].length === options.length ? "すべて解除" : "すべて選択"}
+                    </button>
+                  )}
+                </div>
                 <div className="flex flex-wrap gap-2">
                   {options.map((v) => (
                     <label
