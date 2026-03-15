@@ -66,7 +66,7 @@ export async function POST(request: NextRequest) {
 
       try {
         await getResend().emails.send({
-          from: "M&Aレーダー <noreply@ma-radar.jp>",
+          from: "M&Aレーダー <admin@ma-radar.jp>",
           to: buyer.email,
           subject: `【M&Aレーダー】新着案件: ${deal.title}`,
           html: `
