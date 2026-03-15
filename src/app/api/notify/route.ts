@@ -70,21 +70,66 @@ export async function POST(request: NextRequest) {
           to: buyer.email,
           subject: `【M&Aレーダー】新着案件: ${deal.title}`,
           html: `
-            <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
-              <h2 style="color: #1e40af;">新着M&A案件のお知らせ</h2>
-              <div style="background: #f3f4f6; padding: 20px; border-radius: 8px; margin: 16px 0;">
-                <h3 style="margin-top: 0;">${deal.title}</h3>
-                <p><strong>業種:</strong> ${deal.industry}</p>
-                <p><strong>エリア:</strong> ${deal.area}</p>
-                <p><strong>譲渡希望価格:</strong> ${deal.price_range}</p>
-                ${deal.summary ? `<p>${deal.summary}</p>` : ""}
+            <div style="font-family: 'Helvetica Neue', Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #333;">
+              <!-- ヘッダー -->
+              <div style="background: linear-gradient(135deg, #1e3a8a, #3730a3); padding: 24px 32px; border-radius: 12px 12px 0 0;">
+                <h1 style="color: #fff; font-size: 20px; margin: 0;">M&Aレーダー</h1>
+                <p style="color: #93c5fd; font-size: 13px; margin: 6px 0 0;">新着案件のお知らせ</p>
               </div>
-              ${deal.source_url ? `<p><a href="${deal.source_url}" style="color: #1e40af;">案件の詳細を見る →</a></p>` : ""}
-              <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 24px 0;" />
-              <p style="color: #6b7280; font-size: 12px;">
-                このメールはM&Aレーダーから自動送信されています。<br/>
-                配信停止をご希望の場合はこのメールにご返信ください。
-              </p>
+
+              <!-- 案件カード -->
+              <div style="border: 1px solid #e5e7eb; border-top: none; border-radius: 0 0 12px 12px; overflow: hidden;">
+                <div style="padding: 28px 32px;">
+                  <h2 style="font-size: 18px; margin: 0 0 16px; color: #111;">${deal.title}</h2>
+
+                  ${deal.summary ? `<p style="font-size: 14px; line-height: 1.7; color: #555; margin: 0 0 20px; padding: 16px; background: #f9fafb; border-radius: 8px;">${deal.summary}</p>` : ""}
+
+                  <!-- 詳細テーブル -->
+                  <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
+                    <tr style="border-bottom: 1px solid #f3f4f6;">
+                      <td style="padding: 10px 0; color: #6b7280; width: 140px;">業種</td>
+                      <td style="padding: 10px 0; font-weight: 600;">${deal.industry}</td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid #f3f4f6;">
+                      <td style="padding: 10px 0; color: #6b7280;">エリア</td>
+                      <td style="padding: 10px 0; font-weight: 600;">${deal.area}</td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid #f3f4f6;">
+                      <td style="padding: 10px 0; color: #6b7280;">譲渡希望価格</td>
+                      <td style="padding: 10px 0; font-weight: 600;">${deal.price_range}</td>
+                    </tr>
+                    ${deal.revenue_scale ? `
+                    <tr style="border-bottom: 1px solid #f3f4f6;">
+                      <td style="padding: 10px 0; color: #6b7280;">売上規模</td>
+                      <td style="padding: 10px 0; font-weight: 600;">${deal.revenue_scale}</td>
+                    </tr>` : ""}
+                    ${deal.employee_scale ? `
+                    <tr style="border-bottom: 1px solid #f3f4f6;">
+                      <td style="padding: 10px 0; color: #6b7280;">従業員規模</td>
+                      <td style="padding: 10px 0; font-weight: 600;">${deal.employee_scale}</td>
+                    </tr>` : ""}
+                    ${deal.source_site ? `
+                    <tr>
+                      <td style="padding: 10px 0; color: #6b7280;">掲載元</td>
+                      <td style="padding: 10px 0; font-weight: 600;">${deal.source_site}</td>
+                    </tr>` : ""}
+                  </table>
+
+                  <!-- CTAボタン -->
+                  ${deal.source_url ? `
+                  <div style="text-align: center; margin-top: 24px;">
+                    <a href="${deal.source_url}" style="display: inline-block; background: #1e40af; color: #fff; text-decoration: none; padding: 14px 32px; border-radius: 8px; font-weight: 600; font-size: 15px;">案件の詳細を見る</a>
+                  </div>` : ""}
+                </div>
+
+                <!-- フッター -->
+                <div style="background: #f9fafb; padding: 20px 32px; border-top: 1px solid #e5e7eb;">
+                  <p style="color: #9ca3af; font-size: 12px; margin: 0; line-height: 1.6;">
+                    このメールはM&Aレーダーから自動送信されています。<br/>
+                    配信停止をご希望の場合はこのメールにご返信ください。
+                  </p>
+                </div>
+              </div>
             </div>
           `,
         });
